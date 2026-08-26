@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8" />
+<title>Design System Preview — Spotify Discovery Companion</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--
+  Reference-only preview: mirrors tailwind.config.ts and globals.css
+  exactly, but loads Tailwind and fonts from a CDN so it opens directly in
+  a browser with no build step. The real app self-hosts fonts via
+  @fontsource and compiles Tailwind normally — see Phase 7 Module 1 notes.
+-->
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          ink: "#14110F",
+          graphite: "#241F19",
+          paper: "#EDE6D6",
+          "paper-muted": "#B8AF9C",
+          tape: "#C9A15A",
+          verdigris: "#5B8A72",
+          rust: "#A6503A",
+        },
+        fontFamily: {
+          display: ["Space Grotesk", "system-ui", "sans-serif"],
+          mono: ["JetBrains Mono", "ui-monospace", "monospace"],
+        },
+        borderRadius: { card: "10px" },
+      },
+    },
+  };
+</script>
+<style>
+  body { font-family: "Space Grotesk", system-ui, sans-serif; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+  .tape-label {
+    display: inline-flex; align-items: center; gap: 4px;
+    border: 1px dashed rgba(201, 161, 90, 0.6); border-radius: 2px;
+    padding: 2px 6px; font-family: "JetBrains Mono", monospace;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: #C9A15A; transform: rotate(-1.5deg);
+  }
+  .swatch { border-radius: 8px; height: 64px; }
+</style>
+</head>
+<body class="bg-ink text-paper p-10 space-y-12">
+
+  <section>
+    <p class="mono text-xs uppercase tracking-widest text-paper-muted mb-2">Signature element</p>
+    <h1 class="text-2xl font-semibold mb-4">The tape label</h1>
+    <p class="text-paper-muted max-w-md mb-4">
+      The one deliberate visual risk in this system — a version-type tag
+      that reads like a hand-labeled cassette rather than a generic
+      colored pill. Used exactly once per result card; everything else
+      stays flat and quiet.
+    </p>
+    <div class="flex gap-2 flex-wrap">
+      <span class="tape-label">Acoustic</span>
+      <span class="tape-label">Live</span>
+      <span class="tape-label">Session</span>
+      <span class="tape-label">Cover</span>
+      <span class="tape-label">Demo</span>
+    </div>
+  </section>
+
+  <section>
+    <p class="mono text-xs uppercase tracking-widest text-paper-muted mb-3">Palette</p>
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-3">
+      <div><div class="swatch bg-ink border border-graphite"></div><p class="mono text-xs mt-1">ink #14110F</p></div>
+      <div><div class="swatch bg-graphite"></div><p class="mono text-xs mt-1">graphite #241F19</p></div>
+      <div><div class="swatch bg-paper"></div><p class="mono text-xs mt-1 text-ink">paper #EDE6D6</p></div>
+      <div><div class="swatch" style="background:#B8AF9C"></div><p class="mono text-xs mt-1">paper-muted</p></div>
+      <div><div class="swatch bg-tape"></div><p class="mono text-xs mt-1">tape #C9A15A</p></div>
+      <div><div class="swatch bg-verdigris"></div><p class="mono text-xs mt-1">verdigris #5B8A72</p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="mono text-xs uppercase tracking-widest text-paper-muted mb-3">Type scale</p>
+    <p class="text-3xl font-semibold">Perfect</p>
+    <p class="text-lg font-medium text-paper mt-1">Ed Sheeran</p>
+    <p class="mono text-sm text-paper-muted mt-1">42,103,558 views · 3:23</p>
+  </section>
+
+  <section>
+    <p class="mono text-xs uppercase tracking-widest text-paper-muted mb-3">Sample card (popup window width, ~360px)</p>
+    <div class="w-[360px] border border-graphite rounded-lg overflow-hidden">
+      <div class="border-b border-graphite px-4 py-3">
+        <p class="mono text-[10px] uppercase tracking-widest text-paper-muted">Now Playing</p>
+        <p class="text-lg font-medium mt-1">Perfect</p>
+        <p class="text-sm text-paper-muted">Ed Sheeran</p>
+      </div>
+      <div class="p-4 space-y-3">
+        <article class="flex gap-3 rounded-card border border-graphite bg-graphite/50 p-3">
+          <div class="h-14 w-14 flex-shrink-0 rounded-sm bg-graphite"></div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-start justify-between gap-2">
+              <p class="truncate font-medium">Perfect (Acoustic)</p>
+              <span class="tape-label flex-shrink-0">Acoustic</span>
+            </div>
+            <p class="text-sm text-paper-muted truncate mt-1">Ed Sheeran</p>
+            <p class="mono text-xs text-paper-muted mt-0.5">42.1M views</p>
+          </div>
+        </article>
+        <article class="flex gap-3 rounded-card border border-graphite bg-graphite/50 p-3">
+          <div class="h-14 w-14 flex-shrink-0 rounded-sm bg-graphite"></div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-start justify-between gap-2">
+              <p class="truncate font-medium">Perfect — Live from Suncoast Sessions</p>
+              <span class="tape-label flex-shrink-0">Live</span>
+            </div>
+            <p class="text-sm text-paper-muted truncate mt-1">Suncoast Sessions</p>
+            <p class="mono text-xs text-paper-muted mt-0.5">890K views</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

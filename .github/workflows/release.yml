@@ -1,0 +1,65 @@
+name: Release
+
+# Tag-triggered rather than branch-triggered — push a version tag (e.g.
+# `v0.1.0`) and this builds and publishes; nothing runs on ordinary
+# commits to main.
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Windows + macOS only, per Phase 0's platform scope — no Linux
+          # build, unlike most tauri-action examples, which default to
+          # covering all three.
+          - platform: "windows-latest"
+            args: ""
+          - platform: "macos-latest"
+            args: "--target aarch64-apple-darwin"
+          - platform: "macos-latest"
+            args: "--target x86_64-apple-darwin"
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - run: npm ci
+
+      # NOTE — no code signing configured. macOS Gatekeeper and Windows
+      # SmartScreen will both warn users on first launch of an unsigned
+      # build; this was flagged as a real, unresolved tension back in
+      # Phase 1's risk list. Apple Developer Program (~$99/yr) and a
+      # Windows code-signing certificate both cost real money, directly
+      # against this project's $0 target — signing is a deliberate future
+      # step once/if that tradeoff is worth making, not an oversight here.
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # See .env.example — these are the shared embedded Spotify
+          # credentials from Phase 2/6, set as GitHub repo secrets, never
+          # committed to source. Without these, the release build ships
+          # with catalog-dedup silently disabled rather than failing loudly.
+          VITE_SPOTIFY_CLIENT_ID: ${{ secrets.VITE_SPOTIFY_CLIENT_ID }}
+          VITE_SPOTIFY_CLIENT_SECRET: ${{ secrets.VITE_SPOTIFY_CLIENT_SECRET }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "Spotify Discovery Companion ${{ github.ref_name }}"
+          releaseBody: "See the assets below to download for your platform."
+          releaseDraft: true
+          args: ${{ matrix.args }}

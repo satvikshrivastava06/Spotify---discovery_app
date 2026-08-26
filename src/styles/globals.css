@@ -1,0 +1,49 @@
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-ink font-display text-paper antialiased;
+}
+
+/* The one deliberate signature element in this design system (see Phase 7
+   Module 1 notes): the version-type tag reads like a hand-labeled
+   cassette — a slight consistent rotation and a dashed border — rather
+   than a generic colored pill. It's the single visual risk; everything
+   else in the UI stays flat and quiet on purpose. */
+.tape-label {
+  @apply inline-flex items-center gap-1 rounded-sm border border-dashed border-tape/60
+    px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-tape;
+  transform: rotate(-1.5deg);
+}
+
+/* Visible keyboard focus everywhere, per the accessibility floor this
+   design system commits to regardless of how small the popup window is. */
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-tape;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
