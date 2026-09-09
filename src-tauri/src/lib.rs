@@ -136,15 +136,12 @@ pub fn run() {
         .plugin(tauri_plugin_http::init())
         .invoke_handler(tauri::generate_handler![commands::media::get_now_playing])
         .setup(|app| {
-            build_tray(app)?;
-
-            // Closing the window hides it instead of quitting — the app
-            // only exits via the tray menu's Quit item, matching Phase 1's
-            // "runs quietly in the background" requirement. Without this,
-            // clicking the window's close button would kill the whole
-            // background detection loop, defeating the point of the tray
-            // icon existing at all.
+            // Build the system tray menu; ignore errors if tray is unsupported
+            let _ = build_tray(app);
             if let Some(window) = app.get_webview_window("main") {
+                let _ = window.show();
+                let _ = window.set_focus();
+                
                 let window_handle = window.clone();
                 window.on_window_event(move |event| {
                     if let WindowEvent::CloseRequested { api, .. } = event {

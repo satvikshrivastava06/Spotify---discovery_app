@@ -30,6 +30,7 @@ log = "0.4"
 windows = { version = "0.58", features = [
     "Media_Control",
     "Foundation",
+    "Foundation_Collections",  # IVectorView — needed to iterate GetSessions() result
 ] }
 
 # macOS-only: CFDictionary/CFString bridging and dlopen/dlsym for the
